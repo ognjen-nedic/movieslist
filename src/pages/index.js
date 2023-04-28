@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect, useRef } from 'react';
 import { Orbitron, Ubuntu } from 'next/font/google'
-import { AiFillEdit } from 'react-icons/ai'
+import { AiFillEdit, AiOutlineUnorderedList } from 'react-icons/ai'
 import html2canvas from 'html2canvas';
 
 const ubuntu = Ubuntu({ subsets: ['latin'], weight: "400" })
@@ -18,9 +18,11 @@ export default function Home() {
   const [draggedIndex, setDraggedIndex] = useState(null);
   const printRef = useRef();
 
-  const [listName, setListName] = useState('My Top 10 Movies')
-  const listNameInputField = useRef(null)
-  const [listNameEditable, setListNameEditable] = useState(false)
+  const [listName, setListName] = useState('My Top 10 Movies');
+  const listNameInputField = useRef(null);
+  const [listNameEditable, setListNameEditable] = useState(false);
+
+  const [showDrawer, setShowDrawer] = useState(false);
 
   const fetchMovies = async (url) => {
     setIsLoading(true);
@@ -113,51 +115,7 @@ export default function Home() {
       <h1 className={`self-start ${orbitron.className}`} style={{ letterSpacing: '2px' }}>
         Movies<span className={`font-bold`}>List</span>
       </h1>
-      <div className='title-container'>
-        <input 
-          type='text' 
-          value={listName} 
-          className='list-name-title' 
-          onChange={(event) => setListName(event.target.value)}
-          disabled={!listNameEditable}
-          ref={listNameInputField}
-        />
-        <button
-          className='edit-list-name-enabler-button'
-          /* onClick={() => {setListNameEditable(!listNameEditable); listNameInputField.current.focus()}} */
-          onClick={editButtonPressed}
-        >
-          <AiFillEdit size='40'/>
-        </button>
-      </div>
-      <div className='download-button-container'>
-        <button disabled={!moviesList.length} className='download-button' type="button" onClick={handleDownloadImage}>
-          Download for Instagram Story
-        </button>
-      </div>
-      <div className='movies-list-container'>
-        {moviesList.map((movie, index) => {
-          const { imdbID: id, Poster: poster, Title: title, Year: year } = movie
-          return(
-            <div key={index} draggable="true"
-            onDragStart={(e) => handleDragStart(e, index)}
-            onDragOver={(e) => handleDragOver(e)}
-            onDrop={(e) => handleDrop(e, index)}
-            className='movies-list-entity'>              
-            {index+1}. 
-            <img src={poster === 'N/A' ? missingPictureUrl : poster} alt={title} />
-            {title}             ({year})
-            <button onClick={() => handleDeleteObject(index)} className='deletebtn'>X</button>            
-            {/* {index > 0 && (
-              <button onClick={() => handleMoveUp(index)}>Up</button>
-            )}
-            {index < moviesList.length - 1 && (
-              <button onClick={() => handleMoveDown(index)}>Down</button>
-            )} */}
-            </div>
-            )
-        })}
-      </div>
+
       <div>
         <form className='search-form' onSubmit={(e) => e.preventDefault()}>
           <h2>search movies</h2>
@@ -214,7 +172,62 @@ export default function Home() {
         <h1 className={`${orbitron.className}`} style={{ letterSpacing: '2px' }}>
           Movies<span className={`font-bold`}>List</span>
         </h1>
-    </div>
+      </div>
+      <div className={showDrawer ? 'drawer show' : 'drawer'}>
+        
+        <div className='drawer-icon' onClick={() => setShowDrawer(!showDrawer)}>
+          <AiOutlineUnorderedList size='20'/>
+          <div className='drawer-icon-counter'>{moviesList.length}</div>
+        </div>
+
+        <div className='title-container'>
+          <input 
+            type='text' 
+            value={listName} 
+            className='list-name-title' 
+            onChange={(event) => setListName(event.target.value)}
+            disabled={!listNameEditable}
+            ref={listNameInputField}
+          />
+          <button
+            className='edit-list-name-enabler-button'
+            onClick={editButtonPressed}
+          >
+            <AiFillEdit size='20'/>
+          </button>
+        </div>
+
+        <div className='download-button-container'>
+          <button disabled={!moviesList.length} className='download-button' type="button" onClick={handleDownloadImage}>
+            Download for IG Story
+          </button>
+        </div>
+
+        <div className='movies-list-container'>
+          {moviesList.map((movie, index) => {
+            const { imdbID: id, Poster: poster, Title: title, Year: year } = movie
+            return(
+              <div key={index} draggable="true"
+              onDragStart={(e) => handleDragStart(e, index)}
+              onDragOver={(e) => handleDragOver(e)}
+              onDrop={(e) => handleDrop(e, index)}
+              className='movies-list-entity'>              
+              {index+1}. 
+              <img src={poster === 'N/A' ? missingPictureUrl : poster} alt={title} />
+              {title}             ({year})
+              <button onClick={() => handleDeleteObject(index)} className='deletebtn'>X</button>            
+              {/* {index > 0 && (
+                <button onClick={() => handleMoveUp(index)}>Up</button>
+              )}
+              {index < moviesList.length - 1 && (
+                <button onClick={() => handleMoveDown(index)}>Down</button>
+              )} */}
+              </div>
+            )
+          })}
+        </div>
+
+      </div>
     </main>
   )
 }
