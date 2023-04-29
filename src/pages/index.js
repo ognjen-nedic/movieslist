@@ -174,11 +174,11 @@ export default function Home() {
         </h1>
       </div>
       <div className={showDrawer ? 'drawer show' : 'drawer'}>
+          <div className='drawer-icon' onClick={() => setShowDrawer(!showDrawer)}>
+            <AiOutlineUnorderedList size='20'/>
+            <div className='drawer-icon-counter'>{moviesList.length}</div>
+          </div>
         
-        <div className='drawer-icon' onClick={() => setShowDrawer(!showDrawer)}>
-          <AiOutlineUnorderedList size='20'/>
-          <div className='drawer-icon-counter'>{moviesList.length}</div>
-        </div>
 
         <div className='title-container'>
           <input 
