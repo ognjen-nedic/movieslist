@@ -125,6 +125,11 @@ export default function Home() {
         <meta name="application-name" content="MoviesList" />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff"></meta>
+
+        <meta property="og:title" content="MoviesList" />
+        <meta property="og:description" content="Create a list of movies and share it on IG story!" />
+        <meta property="og:image" content="/movieslist/OpenGraph.jpg" />
+        <meta property="og:url" content="movieslist.io" />
       </Head>
       <main
         className={`flex min-h-screen flex-col items-center p-12 ${ubuntu.className}`}
