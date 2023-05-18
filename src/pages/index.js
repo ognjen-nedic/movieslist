@@ -2,6 +2,7 @@ import { useState, useContext, useEffect, useRef } from 'react';
 import { Orbitron, Ubuntu } from 'next/font/google'
 import { AiFillEdit, AiOutlineUnorderedList } from 'react-icons/ai'
 import html2canvas from 'html2canvas';
+import Head from 'next/head';
 
 const ubuntu = Ubuntu({ subsets: ['latin'], weight: "400" })
 const orbitron = Orbitron({ subsets: ['latin'] })
@@ -109,125 +110,142 @@ export default function Home() {
 
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center p-12 ${ubuntu.className}`}
-    >
-      <h1 className={`self-start ${orbitron.className}`} style={{ letterSpacing: '2px' }}>
-        Movies<span className={`font-bold`}>List</span>
-      </h1>
+    <>
+      <Head>
+        <title>MoviesList</title>
+        <meta property="og:title" content="MoviesList" key="title" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
 
-      <div>
-        <form className='search-form' onSubmit={(e) => e.preventDefault()}>
-          <h2>search movies</h2>
-          <input
-            type='text'
-            className='form-input'
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </form>
-        <section className='movies'>
-          {movies.map((movie) => {
-            const { imdbID: id, Poster: poster, Title: title, Year: year } = movie
-
-            return (
-              <div key={id} className='movie'>
-                <article>
-                  <img src={poster === 'N/A' ? missingPictureUrl : poster} alt={title} />
-                  <input 
-                    type='button' 
-                    className='addBtn' 
-                    value='+'
-                    onClick={() => handleAddObject(movie)}
-                  />
-                  <div className='movie-info'>
-                    <h4 className='title'>{title}</h4>
-                    <p>{year}</p>
-                  </div>
-                </article>
-              </div>
-            )
-          })}
-         </section>
-      </div>
-      <div className='instagram-story-image' ref={printRef}>
-        <div className='listnamecontainer'>
-          <h1 className={`${orbitron.className} `}>{listName}</h1>
-        </div>
-        <div className='entities-list'>
-          {moviesList.map((movie, index) => {
-              const { imdbID: id, Poster: poster, Title: title, Year: year } = movie
-              return(
-                <div key={id} className='instagram-story-image_entity'>
-                <article>
-                  <img src={poster === 'N/A' ? missingPictureUrl : poster} alt={title} />
-                  <div className='instagram-story-image_entity-info'>
-                    <h4 className='title'>{title} ({year})</h4>
-                  </div>
-                </article>
-              </div>
-              )
-          })}
-        </div>
-        <h1 className={`${orbitron.className}`} style={{ letterSpacing: '2px' }}>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+        <meta name="apple-mobile-web-app-title" content="MoviesList" />
+        <meta name="application-name" content="MoviesList" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="theme-color" content="#ffffff"></meta>
+      </Head>
+      <main
+        className={`flex min-h-screen flex-col items-center p-12 ${ubuntu.className}`}
+      >
+        <h1 className={`self-start ${orbitron.className}`} style={{ letterSpacing: '2px' }}>
           Movies<span className={`font-bold`}>List</span>
         </h1>
-      </div>
-      <div className={showDrawer ? 'drawer show' : 'drawer'}>
-          <div className='drawer-icon' onClick={() => setShowDrawer(!showDrawer)}>
-            <AiOutlineUnorderedList size='20'/>
-            <div className='drawer-icon-counter'>{moviesList.length}</div>
+
+        <div>
+          <form className='search-form' onSubmit={(e) => e.preventDefault()}>
+            <h2>search movies</h2>
+            <input
+              type='text'
+              className='form-input'
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </form>
+          <section className='movies'>
+            {movies.map((movie) => {
+              const { imdbID: id, Poster: poster, Title: title, Year: year } = movie
+
+              return (
+                <div key={id} className='movie'>
+                  <article>
+                    <img src={poster === 'N/A' ? missingPictureUrl : poster} alt={title} />
+                    <input 
+                      type='button' 
+                      className='addBtn' 
+                      value='+'
+                      onClick={() => handleAddObject(movie)}
+                    />
+                    <div className='movie-info'>
+                      <h4 className='title'>{title}</h4>
+                      <p>{year}</p>
+                    </div>
+                  </article>
+                </div>
+              )
+            })}
+          </section>
+        </div>
+        <div className='instagram-story-image' ref={printRef}>
+          <div className='listnamecontainer'>
+            <h1 className={`${orbitron.className} `}>{listName}</h1>
           </div>
-        
-
-        <div className='title-container'>
-          <input 
-            type='text' 
-            value={listName} 
-            className='list-name-title' 
-            onChange={(event) => setListName(event.target.value)}
-            disabled={!listNameEditable}
-            ref={listNameInputField}
-          />
-          <button
-            className='edit-list-name-enabler-button'
-            onClick={editButtonPressed}
-          >
-            <AiFillEdit size='20'/>
-          </button>
+          <div className='entities-list'>
+            {moviesList.map((movie, index) => {
+                const { imdbID: id, Poster: poster, Title: title, Year: year } = movie
+                return(
+                  <div key={id} className='instagram-story-image_entity'>
+                  <article>
+                    <img src={poster === 'N/A' ? missingPictureUrl : poster} alt={title} />
+                    <div className='instagram-story-image_entity-info'>
+                      <h4 className='title'>{title} ({year})</h4>
+                    </div>
+                  </article>
+                </div>
+                )
+            })}
+          </div>
+          <h1 className={`${orbitron.className}`} style={{ letterSpacing: '2px' }}>
+            Movies<span className={`font-bold`}>List</span>
+          </h1>
         </div>
+        <div className={showDrawer ? 'drawer show' : 'drawer'}>
+            <div className='drawer-icon' onClick={() => setShowDrawer(!showDrawer)}>
+              <AiOutlineUnorderedList size='20'/>
+              <div className='drawer-icon-counter'>{moviesList.length}</div>
+            </div>
+          
 
-        <div className='download-button-container'>
-          <button disabled={!moviesList.length} className='download-button' type="button" onClick={handleDownloadImage}>
-            Download for IG Story
-          </button>
+          <div className='title-container'>
+            <input 
+              type='text' 
+              value={listName} 
+              className='list-name-title' 
+              onChange={(event) => setListName(event.target.value)}
+              disabled={!listNameEditable}
+              ref={listNameInputField}
+            />
+            <button
+              className='edit-list-name-enabler-button'
+              onClick={editButtonPressed}
+            >
+              <AiFillEdit size='20'/>
+            </button>
+          </div>
+
+          <div className='download-button-container'>
+            <button disabled={!moviesList.length} className='download-button' type="button" onClick={handleDownloadImage}>
+              Download for IG Story
+            </button>
+          </div>
+
+          <div className='movies-list-container'>
+            {moviesList.map((movie, index) => {
+              const { imdbID: id, Poster: poster, Title: title, Year: year } = movie
+              return(
+                <div key={index} draggable="true"
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragOver={(e) => handleDragOver(e)}
+                onDrop={(e) => handleDrop(e, index)}
+                className='movies-list-entity'>              
+                {index+1}. 
+                <img src={poster === 'N/A' ? missingPictureUrl : poster} alt={title} />
+                {title}             ({year})
+                <button onClick={() => handleDeleteObject(index)} className='deletebtn'>X</button>            
+                {/* {index > 0 && (
+                  <button onClick={() => handleMoveUp(index)}>Up</button>
+                )}
+                {index < moviesList.length - 1 && (
+                  <button onClick={() => handleMoveDown(index)}>Down</button>
+                )} */}
+                </div>
+              )
+            })}
+          </div>
+
         </div>
-
-        <div className='movies-list-container'>
-          {moviesList.map((movie, index) => {
-            const { imdbID: id, Poster: poster, Title: title, Year: year } = movie
-            return(
-              <div key={index} draggable="true"
-              onDragStart={(e) => handleDragStart(e, index)}
-              onDragOver={(e) => handleDragOver(e)}
-              onDrop={(e) => handleDrop(e, index)}
-              className='movies-list-entity'>              
-              {index+1}. 
-              <img src={poster === 'N/A' ? missingPictureUrl : poster} alt={title} />
-              {title}             ({year})
-              <button onClick={() => handleDeleteObject(index)} className='deletebtn'>X</button>            
-              {/* {index > 0 && (
-                <button onClick={() => handleMoveUp(index)}>Up</button>
-              )}
-              {index < moviesList.length - 1 && (
-                <button onClick={() => handleMoveDown(index)}>Down</button>
-              )} */}
-              </div>
-            )
-          })}
-        </div>
-
-      </div>
-    </main>
+      </main>
+    </>
   )
 }
